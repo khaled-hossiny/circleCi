@@ -1,18 +1,16 @@
-version: 2.1
-
-commands:
-  print_pipeline_id:
-    steps:
-      - run: echo ${CIRCLE_WORKFLOW_ID}
-
 jobs:
-  my_job:
+  create_infrastructure:
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
-      - print_pipeline_id
+      - checkout
+      - run:
+          name: Ensure backend infrastructure exists
+          command: | 
+            aws cloudformation deploy --template-file template.yml
+            --stack-name my-stack
 
 workflows:
   my_workflow:
     jobs:
-      - my_job
+      - create_infrastructure
