@@ -1,12 +1,13 @@
+version: 2.1
 jobs:
   configure_infrastructure: 
     docker:
-      - image: 
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
       		# You can get this ID in the section where you registered the SSH Key
-          	fingerprints: ["f9:f1:fc:68:82:47:28:92:4c:70:86:cd:ef:e6:1e:4a"] 
+          fingerprints: ["f9:f1:fc:68:82:47:28:92:4c:70:86:cd:ef:e6:1e:4a"] 
       - run:
           name: Install Ansible
           command: |
