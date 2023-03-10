@@ -1,18 +1,22 @@
-version: 2.1
-
 jobs:
-  create_infrastructure:
+  configure_infrastructure: 
     docker:
-      - image: amazon/aws-cli
+      - image: 
     steps:
       - checkout
+      - add_ssh_keys:
+      		# You can get this ID in the section where you registered the SSH Key
+          	fingerprints: ["f9:f1:fc:68:82:47:28:92:4c:70:86:cd:ef:e6:1e:4a"] 
       - run:
-          name: Ensure backend infrastructure exists
-          command: | 
-            aws cloudformation deploy --template-file template.yml \
-            --stack-name my-stack
+          name: Install Ansible
+          command: |
+            apk add --update ansible
+      - run:
+          name: Run Playbook and Configure server
+          command: |
+            ansible-playbook -i inventory main.yml
 
 workflows:
   my_workflow:
     jobs:
-      - create_infrastructure
+      - configure_infrastructure
